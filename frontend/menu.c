@@ -939,6 +939,7 @@ me_bind_action emuctrl_actions[] =
 	{ "Slot7			", 1 << SACTION_SLOT7 },
 	{ "Slot8			", 1 << SACTION_SLOT8 },
 	{ "Slot9			", 1 << SACTION_SLOT9 },
+	{ "Pause            ", 1 << SACTION_PAUSE },
 	{ NULL,                0 }
 };
 

@@ -75,6 +75,8 @@ int state_slot;
 enum sched_action emu_action, emu_action_old;
 char hud_msg[64];
 int hud_new_msg;
+int is_paused = 0;
+int is_pause_pressed = 0;
 
 void set_cd_image(const char *fname)
 {
@@ -287,6 +289,19 @@ do_state_slot:
 	case SACTION_ANALOG_TOGGLE:
 		ret = padToggleAnalog(0);
 		snprintf(hud_msg, sizeof(hud_msg), "ANALOG %s", ret ? "ON" : "OFF");
+		break;
+	case SACTION_PAUSE:
+		if(is_pause_pressed == 0)
+		{
+			// handle debounce
+			is_pause_pressed = 1;
+			if(is_paused)
+				is_paused = 0;
+			else
+				is_paused = 1;
+			snprintf(hud_msg, sizeof(hud_msg), "%s", is_paused ? "PAUSE" : "RESUME");
+			SysPrintf("* %s\n", hud_msg);
+		}
 		break;
 	default:
 		return;
@@ -734,7 +749,20 @@ int main(int argc, char *argv[])
 		psxRegs.stop = 0;
 		emu_action = SACTION_NONE;
 
-		psxCpu->Execute(&psxRegs);
+		if(is_paused)
+		{
+			usleep(20000);
+			void update_input(void);
+			update_input();
+		}
+		else
+		{
+			psxCpu->Execute(&psxRegs);
+		}
+
+		if(emu_action != SACTION_PAUSE)
+			is_pause_pressed = 0;
+
 		if (emu_action != SACTION_NONE)
 			do_emu_action();
 	}

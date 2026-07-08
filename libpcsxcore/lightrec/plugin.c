@@ -638,7 +638,8 @@ static void lightrec_plugin_execute_internal(bool block_only)
 
 static void lightrec_plugin_execute(psxRegisters *regs)
 {
-	while (!regs->stop)
+	extern int is_paused;
+	while (!regs->stop && !is_paused)
 		lightrec_plugin_execute_internal(lightrec_very_debug);
 }
 

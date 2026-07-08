@@ -701,7 +701,7 @@ static void emu_set_action(enum sched_action action_)
 	emu_action = action_;
 }
 
-static void update_input(void)
+void update_input(void)
 {
 	int actions[IN_BINDTYPE_COUNT] = { 0, };
 	unsigned int emu_act;
@@ -922,7 +922,8 @@ static void *watchdog_thread(void *unused)
 	{
 		sleep(sleep_time);
 
-		if (psxRegs.stop) {
+		extern int is_paused;
+		if (psxRegs.stop || is_paused) {
 			seen_dead = 0;
 			sleep_time = 5;
 			continue;
