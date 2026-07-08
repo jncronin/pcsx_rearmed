@@ -1,6 +1,7 @@
 [submodule "libpicofe"]
 	path = frontend/libpicofe
 	url = https://github.com/jncronin/libpicofe.git
+	ignore = dirty
 [submodule "warm"]
 	path = frontend/warm
 	url = https://github.com/notaz/warm.git
@@ -10,9 +11,11 @@
 [submodule "deps/lightrec"]
 	path = deps/lightrec
 	url = https://github.com/pcercuei/lightrec.git
+	ignore = dirty
 [submodule "deps/lightning"]
 	path = deps/lightning
 	url = https://github.com/notaz/gnu_lightning.git
+	ignore = dirty
 [submodule "deps/libretro-common"]
 	path = deps/libretro-common
 	url = https://github.com/libretro/libretro-common.git
