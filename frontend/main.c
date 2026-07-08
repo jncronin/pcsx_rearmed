@@ -186,6 +186,18 @@ void do_emu_action(void)
 		state_slot--;
 		if (state_slot < 0)
 			state_slot = 9;
+		goto do_state_slot;
+	case SACTION_SLOT0:
+	case SACTION_SLOT1:
+	case SACTION_SLOT2:
+	case SACTION_SLOT3:
+	case SACTION_SLOT4:
+	case SACTION_SLOT5:
+	case SACTION_SLOT6:
+	case SACTION_SLOT7:
+	case SACTION_SLOT8:
+	case SACTION_SLOT9:
+		state_slot = (int)emu_action - (int)SACTION_SLOT0;
 do_state_slot:
 		snprintf(hud_msg, sizeof(hud_msg), "STATE SLOT %d [%s]", state_slot,
 			emu_check_state(state_slot) == 0 ? "USED" : "FREE");

@@ -929,6 +929,16 @@ me_bind_action emuctrl_actions[] =
 	{ "Volume Down      ", 1 << SACTION_VOLUME_DOWN },
 #endif
 	{ "Analog toggle    ", 1 << SACTION_ANALOG_TOGGLE },
+	{ "Slot0			", 1 << SACTION_SLOT0 },
+	{ "Slot1			", 1 << SACTION_SLOT1 },
+	{ "Slot2			", 1 << SACTION_SLOT2 },
+	{ "Slot3			", 1 << SACTION_SLOT3 },
+	{ "Slot4			", 1 << SACTION_SLOT4 },
+	{ "Slot5			", 1 << SACTION_SLOT5 },
+	{ "Slot6			", 1 << SACTION_SLOT6 },
+	{ "Slot7			", 1 << SACTION_SLOT7 },
+	{ "Slot8			", 1 << SACTION_SLOT8 },
+	{ "Slot9			", 1 << SACTION_SLOT9 },
 	{ NULL,                0 }
 };
 
