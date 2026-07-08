@@ -907,7 +907,11 @@ me_bind_action emuctrl_actions[] =
 	{ "Prev Save Slot   ", 1 << SACTION_PREV_SSLOT },
 	{ "Next Save Slot   ", 1 << SACTION_NEXT_SSLOT },
 	{ "Toggle Frameskip ", 1 << SACTION_TOGGLE_FSKIP },
+#ifdef __GAMEKID__
+	{ "Resume           ", 1 << SACTION_RESUME },
+#else
 	{ "Take Screenshot  ", 1 << SACTION_SCREENSHOT },
+#endif
 	{ "Show/Hide FPS    ", 1 << SACTION_TOGGLE_FPS },
 #ifndef HAVE_PRE_ARMV7
 	{ "Switch Renderer  ", 1 << SACTION_SWITCH_DISPMODE },

@@ -76,7 +76,6 @@ enum sched_action emu_action, emu_action_old;
 char hud_msg[64];
 int hud_new_msg;
 int is_paused = 0;
-int is_pause_pressed = 0;
 
 void set_cd_image(const char *fname)
 {
@@ -244,6 +243,7 @@ do_state_slot:
 			GPU_open(&gpuDisp, "PCSX", NULL);
 		}
 		break;
+#ifndef __GAMEKID__
 	case SACTION_SCREENSHOT:
 		{
 			char buf[MAXPATHLEN];
@@ -266,6 +266,7 @@ do_state_slot:
 				SysPrintf("writepng %s: %d\n", buf, ret);
 			break;
 		}
+#endif
 	case SACTION_VOLUME_UP:
 	case SACTION_VOLUME_DOWN:
 		{
@@ -291,18 +292,23 @@ do_state_slot:
 		snprintf(hud_msg, sizeof(hud_msg), "ANALOG %s", ret ? "ON" : "OFF");
 		break;
 	case SACTION_PAUSE:
-		if(is_pause_pressed == 0)
+		if(!is_paused)
 		{
-			// handle debounce
-			is_pause_pressed = 1;
-			if(is_paused)
-				is_paused = 0;
-			else
-				is_paused = 1;
-			snprintf(hud_msg, sizeof(hud_msg), "%s", is_paused ? "PAUSE" : "RESUME");
+			snprintf(hud_msg, sizeof(hud_msg), "PAUSE");
 			SysPrintf("* %s\n", hud_msg);
 		}
+		is_paused = 1;
 		break;
+#ifdef __GAMEKID__
+	case SACTION_RESUME:
+		if(is_paused)
+		{
+			snprintf(hud_msg, sizeof(hud_msg), "RESUME");
+			SysPrintf("* %s\n", hud_msg);
+		}
+		is_paused = 0;
+		break;
+#endif
 	default:
 		return;
 	}
@@ -759,9 +765,6 @@ int main(int argc, char *argv[])
 		{
 			psxCpu->Execute(&psxRegs);
 		}
-
-		if(emu_action != SACTION_PAUSE)
-			is_pause_pressed = 0;
 
 		if (emu_action != SACTION_NONE)
 			do_emu_action();
