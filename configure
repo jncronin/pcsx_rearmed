@@ -185,6 +185,8 @@ for opt do
   ;;
   --disable-dynarec) dynarec="no"
   ;;
+  --disable-gles) have_gles="no"
+  ;;
   *) echo "ERROR: unknown option $opt"; show_help="yes"
   ;;
   esac
@@ -205,6 +207,7 @@ if [ "$show_help" = "yes" ]; then
   echo "  --disable-threads        enable/disable multithreaded features [guessed]"
   echo "  --enable-dynamic"
   echo "  --disable-dynamic        enable/disable dynamic loading obj. eg.plugins [guessed]"
+  echo "  --disable-gles           do not use GLES, even if detected"
   echo "  --dynarec=NAME           select dynamic recompiler [guessed]"
   echo "                           available: $dynarec_list"
   echo "influential environment variables:"
@@ -537,14 +540,17 @@ int main(void) {
   return (int)eglGetDisplay( (EGLNativeDisplayType)0 );
 }
 EOF
-if compile_binary $CFLAGS_GLES -lEGL -lGLES_CM $LDLIBS_GLES; then
-  have_gles="yes"
-  LDLIBS_GLES="-lEGL -lGLES_CM $LDLIBS_GLES"
-elif compile_binary $CFLAGS_GLES -lEGL -lGLESv1_CM $LDLIBS_GLES; then
-  have_gles="yes"
-  LDLIBS_GLES="-lEGL -lGLESv1_CM $LDLIBS_GLES"
-elif compile_object $CFLAGS_GLES; then
-  have_gles="yes"
+
+if [ "x$have_gles" != "xno" ]; then
+  if compile_binary $CFLAGS_GLES -lEGL -lGLES_CM $LDLIBS_GLES; then
+    have_gles="yes"
+    LDLIBS_GLES="-lEGL -lGLES_CM $LDLIBS_GLES"
+  elif compile_binary $CFLAGS_GLES -lEGL -lGLESv1_CM $LDLIBS_GLES; then
+    have_gles="yes"
+    LDLIBS_GLES="-lEGL -lGLESv1_CM $LDLIBS_GLES"
+  elif compile_object $CFLAGS_GLES; then
+    have_gles="yes"
+  fi
 fi
 
 if check_c64_tools; then
